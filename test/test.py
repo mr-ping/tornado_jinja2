@@ -1,4 +1,4 @@
-from res.integration import Jinja2Loader
+from tornado_jinja2 import Jinja2Loader
 
 import unittest
 

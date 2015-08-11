@@ -1,6 +1,10 @@
 # Integrate Jinja2 with Tornado
 
-## How to use:
+## Installing:
+
+`pip install tornado-jinja2`
+
+## Using:
 
 Import the jinja2 loader to your project 
 
@@ -20,7 +24,7 @@ application = tornado.web.Application(handler=[],
                                       **settings)
 ```
 
-## Test it
+## Testing
 
 Execuse the command in the package directory
 
