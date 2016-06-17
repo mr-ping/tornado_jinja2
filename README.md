@@ -17,8 +17,10 @@ Pass the jinja2 loader instance to the "template_loader" parameter which for "to
 ```python
 import tornado.web
 
-jinja2loader = Jinja2Loader('templates_path')
-settings = dict(template_loader=jinja2loader)
+jinja2_env = jinja2.Environment()
+jinja2_env.loader = jinja2.FileSystemLoader('/path/to/templates')
+jinja2_loader = Jinja2Loader(jinja2_env)
+settings = dict(template_loader=jinja2_loader)
 
 application = tornado.web.Application(handler=[],
                                       **settings)
