@@ -6,9 +6,12 @@ import jinja2
 
 
 class LoaderTest(unittest.TestCase):
+    templates_path = 'test/templates/'
+
     def setUp(self):
-        templates_path = 'test/templates/'
-        self.loader = Jinja2Loader(templates_path, jinja2_env_options={'newline_sequence': '\r\n'})
+        self.jinaj2_env = jinja2.Environment()
+        self.jinaj2_env.loader = jinja2.FileSystemLoader(self.templates_path)
+        self.loader = Jinja2Loader(self.jinaj2_env)
         self.template_obj = self.loader.load('page.html')
 
     def test_load_template(self):
@@ -19,14 +22,30 @@ class LoaderTest(unittest.TestCase):
         self.assertIn('hi', html_code)
 
     def test_get_jinja2_environment(self):
-        self.assertEqual(self.template_obj.environment, self.loader.get_jinja2_environment())
+        self.assertIs(self.loader.jinja2_environment, self.loader._jinja2_env)
+        self.assertIs(self.loader.jinja2_environment, self.template_obj.environment)
+
+    def test_set_jinja2_environment(self):
+        env = jinja2.Environment()
+        env.loader = jinja2.FileSystemLoader(self.templates_path)
+        self.loader.jinja2_environment = env
+
+        template_obj2 = self.loader.load('page.html')
+        self.assertIs(template_obj2.environment, env)
 
     def test_cached_jinja2_environment(self):
         template_obj2 = self.loader.load('page.html')
-        self.assertEqual(self.template_obj.environment, template_obj2.environment)
+        self.assertIs(self.template_obj.environment, template_obj2.environment)
 
-    def test_jinja2_env_options(self):
-        self.assertEqual(self.loader.get_jinja2_environment().newline_sequence, '\r\n')
+    def test_check_jinja2_environment(self):
+        self.loader.jinja2_environment = None
+        self.assertRaises(TypeError, self.loader.load, 'page.html')
+
+
+class LoaderLegacyTest(LoaderTest):
+    def setUp(self):
+        self.loader = Jinja2Loader(self.templates_path)
+        self.template_obj = self.loader.load('page.html')
 
 
 if __name__ == '__main__':
