@@ -73,7 +73,7 @@ class Jinja2Loader(tornado.template.BaseLoader):
             self.templates = {}
 
     def resolve_path(self, name, parent_path=None):
-        return name  #
+        return name  # Template searching should be handled by Jinja2's loader
 
     def _create_template(self, name):
         if self._jinja2_env is None:
