@@ -9,8 +9,8 @@ class LoaderTest(unittest.TestCase):
     templates_path = 'test/templates/'
 
     def setUp(self):
-        self.jinja2_env = jinja2.Environment()
-        self.jinja2_env.loader = jinja2.FileSystemLoader(self.templates_path)
+        self.jinja2_env = jinja2.Environment(
+            loader=jinja2.FileSystemLoader(self.templates_path))
         self.loader = Jinja2Loader(self.jinja2_env)
         self.template_obj = self.loader.load('page.html')
 
