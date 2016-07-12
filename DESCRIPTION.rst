@@ -1,27 +1,33 @@
 Integrate Jinja2 into Tornado Framework
 =======================================
 
-This tool make you have the ability that using jiaja2 Template Engine with Tornado Web Framework.
-It will instead of Tornado Templates.
+This package makes you have the ability that using Jiaja2 Template Engine with Tornado Web Framework.
+It will replace the default Tornado Templates.
 
 How to use:
 -----------
 
-Import the jinja2 loader to your project
+Import Jinja2Loader to your project 
 
 .. code-block:: python
 
     from tornado_jinja2 import Jinja2Loader
 
 
-Pass the jinja2 loader instance to the "template_loader" parameter which for "tornado.web.Application"
+Pass the instance of Jinja2Loader to `tornado.web.Application` as the value of "template_loader" parameter.  
+You can use the particular Loader from jinja2 and configuring jinaja2 environment by your self.
 
 .. code-block:: python
 
     import tornado.web
+    import jinja2
 
-    jinja2loader = Jinja2Loader('templates_path')
-    settings = dict(template_loader=jinja2loader)
+    # Create a instance of Jinja2Loader
+    jinja2_env = jinja2.Environment(loader=jinja2.FileSystemLoader('template/path/'), autoescape=False)
+    jinja2_loader = Jinja2Loader(jinja2_env)
 
+    # Give it to Tornado to replace the default Loader.
+    settings = dict(template_loader=jinja2_loader)
     application = tornado.web.Application(handler=[],
-                                        **settings)
+                                          **settings)
+
